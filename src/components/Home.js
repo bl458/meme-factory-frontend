@@ -1,25 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardActions,
   CardHeader,
   IconButton,
   Grid,
+  CircularProgress,
+  Box,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import Navbar from "./Navbar";
 
-const useStyle = makeStyles((theme) => ({
-  memes: {
-    marginTop: theme.spacing(4),
-  },
-  memeCard: {
-    width: "100%",
-    marginBottom: theme.spacing(4),
-  },
-}));
+const useStyle = makeStyles((props) => {
+  return {
+    memes: {
+      marginTop: props.spacing(4),
+    },
+    memeCard: {
+      width: "100%",
+      marginBottom: props.spacing(4),
+    },
+    spinnerWrap: {
+      position: "relative",
+    },
+    spinner: {
+      marginLeft: "50%",
+    },
+  };
+});
 
 const MEME_DATA = [
   {
@@ -46,7 +56,9 @@ const MEME_DATA = [
 ];
 
 const Home = () => {
-  const classes = useStyle();
+  const [progress, setProgress] = useState(0);
+
+  const classes = useStyle(progress);
 
   const onScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
@@ -90,6 +102,10 @@ const Home = () => {
 
         <Grid item xs={1} sm={3} />
       </Grid>
+
+      <Box className={classes.spinnerWrap}>
+        <CircularProgress className={classes.spinner} value={100} />
+      </Box>
     </>
   );
 };
