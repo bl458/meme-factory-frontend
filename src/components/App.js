@@ -1,7 +1,14 @@
 import React from "react";
+import { ThemeProvider } from "@material-ui/core";
 
-function App() {
-  return <div className="App"></div>;
-}
+import theme from "../style/theme";
+
+const App = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <div className="App">Hi</div>
+    </ThemeProvider>
+  );
+};
 
 export default App;
