@@ -1,25 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
-  Avatar,
-  Box,
   Card,
-  CardActionArea,
   CardActions,
-  CardContent,
   CardHeader,
-  CardMedia,
   IconButton,
-  makeStyles,
-  Typography,
+  Grid,
 } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import Navbar from "./Navbar";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const useStyle = makeStyles((theme) => ({
-  root: {
+  memes: {
     marginTop: theme.spacing(4),
   },
   memeCard: {
@@ -55,10 +48,24 @@ const MEME_DATA = [
 const Home = () => {
   const classes = useStyle();
 
+  const onScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      console.log("you're at the bottom of the page");
+      //show loading spinner and make fetch request to api
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       <Navbar />
-      <Grid container className={classes.root}>
+
+      <Grid container className={classes.memes}>
         <Grid item xs={1} sm={3} />
 
         <Grid item container xs={10} sm={6}>
