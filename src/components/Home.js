@@ -25,10 +25,9 @@ const useStyle = makeStyles((props) => {
       marginBottom: props.spacing(4),
     },
     spinnerWrap: {
-      position: "relative",
-    },
-    spinner: {
-      marginLeft: "50%",
+      display: "flex",
+      justifyContent: "center",
+      width: "100%",
     },
   };
 });
@@ -107,16 +106,16 @@ const Home = () => {
               </CardActions>
             </Card>
           ))}
+
+          {isLoading && (
+            <Box className={classes.spinnerWrap}>
+              <CircularProgress />
+            </Box>
+          )}
         </Grid>
 
         <Grid item xs={1} sm={3} />
       </Grid>
-
-      {isLoading && (
-        <Box className={classes.spinnerWrap}>
-          <CircularProgress className={classes.spinner} value={100} />
-        </Box>
-      )}
     </>
   );
 };
