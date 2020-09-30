@@ -1,7 +1,7 @@
 import { API_URL } from "./constants";
 
-export const fetchImages = async () => {
-  const url = `${API_URL}/images`;
+export const fetchImages = async (seed, pageNo) => {
+  const url = `${API_URL}/images/feed/${seed}/${pageNo}`;
   const options = {
     method: "Get",
   };

@@ -33,20 +33,18 @@ const useStyle = makeStyles((props) => {
 });
 
 const Home = () => {
+  // States
   const [progress, setProgress] = useState(0);
   const [memeData, setMemeData] = useState([]);
+  // seed for rand(seed) in backend's mysql query. Will give error if not integer
+  const [seed, setSeed] = useState(Math.floor(Math.random() * 9999));
+  const [pageNo, setPageNo] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Style
   const classes = useStyle(progress);
 
-  const onScroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      console.log("you're at the bottom of the page");
-      //show loading spinner and make fetch request to api
-    }
-  };
-
-  const fetchData = async () => setMemeData(await fetchImages());
-
+  // Functions
   const stripExt = (fileName) => {
     const dotIdx = fileName.lastIndexOf(".");
 
@@ -59,6 +57,23 @@ const Home = () => {
     return new Date(itemDate).toISOString().substring(0, 10);
   };
 
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    setMemeData(await fetchImages(seed, pageNo));
+    setPageNo(pageNo + 1);
+
+    setIsLoading(false);
+  };
+
+  const onScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      console.log("you're at the bottom of the page");
+      fetchData();
+    }
+  };
+
+  // Hooks
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
     fetchData();
@@ -96,9 +111,11 @@ const Home = () => {
         <Grid item xs={1} sm={3} />
       </Grid>
 
-      <Box className={classes.spinnerWrap}>
-        <CircularProgress className={classes.spinner} value={100} />
-      </Box>
+      {isLoading && (
+        <Box className={classes.spinnerWrap}>
+          <CircularProgress className={classes.spinner} value={100} />
+        </Box>
+      )}
     </>
   );
 };
