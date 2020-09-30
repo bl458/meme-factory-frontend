@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core";
 import {
   Card,
   CardActions,
@@ -8,10 +9,10 @@ import {
   CircularProgress,
   Box,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import Navbar from "./Navbar";
+
 import { fetchImages } from "../helper/apiCall";
 
 const useStyle = makeStyles((props) => {
@@ -34,15 +35,14 @@ const useStyle = makeStyles((props) => {
 
 const Home = () => {
   // States
-  const [progress, setProgress] = useState(0);
-  const [memeData, setMemeData] = useState([]);
-  // seed for rand(seed) in backend's mysql query. Will give error if not integer
-  const [seed, setSeed] = useState(Math.floor(Math.random() * 9999));
+  const [memes, setMemes] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  // seed for rand(seed) in backend's mysql query. Random integer 0 ~ 9999
+  const [seed, setSeed] = useState(Math.floor(Math.random() * 9999));
 
   // Style
-  const classes = useStyle(progress);
+  const classes = useStyle();
 
   // Functions
   const stripExt = (fileName) => {
@@ -60,26 +60,27 @@ const Home = () => {
   const fetchData = async () => {
     setIsLoading(true);
 
-    setMemeData(await fetchImages(seed, pageNo));
-    setPageNo(pageNo + 1);
+    const newMemes = await fetchImages(seed, pageNo);
+    setMemes([...memes, ...newMemes]);
 
     setIsLoading(false);
   };
 
   const onScroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      console.log("you're at the bottom of the page");
-      fetchData();
-    }
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight)
+      setPageNo(pageNo + 1);
   };
 
   // Hooks
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
-    fetchData();
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [pageNo]);
 
   return (
     <>
@@ -89,7 +90,7 @@ const Home = () => {
         <Grid item xs={1} sm={3} />
 
         <Grid item container xs={10} sm={6}>
-          {memeData.map((item, idx) => (
+          {memes.map((item, idx) => (
             <Card className={classes.memeCard} key={idx}>
               <CardHeader
                 title={stripExt(item.name)}
