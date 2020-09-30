@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import Navbar from "./Navbar";
+import { fetchImages } from "../helper/apiCall";
 
 const useStyle = makeStyles((props) => {
   return {
@@ -31,32 +32,9 @@ const useStyle = makeStyles((props) => {
   };
 });
 
-const MEME_DATA = [
-  {
-    name: "It wasnt me",
-    url:
-      "https://memefactorynew.s3.ap-northeast-2.amazonaws.com/user/It+wasnt+me.jpg",
-    width: 200,
-    height: 200,
-  },
-  {
-    name: "Forever alone computer",
-    url:
-      "https://memefactorynew.s3.ap-northeast-2.amazonaws.com/user/forever_alone_computer.jpg",
-    width: 200,
-    height: 200,
-  },
-  {
-    name: "Freddie girl",
-    url:
-      "https://memefactorynew.s3.ap-northeast-2.amazonaws.com/user/freddie_girl.jpg",
-    width: 200,
-    height: 200,
-  },
-];
-
 const Home = () => {
   const [progress, setProgress] = useState(0);
+  const [memeData, setMemeData] = useState([]);
 
   const classes = useStyle(progress);
 
@@ -67,8 +45,23 @@ const Home = () => {
     }
   };
 
+  const fetchData = async () => setMemeData(await fetchImages());
+
+  const stripExt = (fileName) => {
+    const dotIdx = fileName.lastIndexOf(".");
+
+    return fileName.substring(0, dotIdx);
+  };
+
+  const getDateStr = (itemDate) => {
+    if (!itemDate) return;
+
+    return new Date(itemDate).toISOString().substring(0, 10);
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
+    fetchData();
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -81,11 +74,11 @@ const Home = () => {
         <Grid item xs={1} sm={3} />
 
         <Grid item container xs={10} sm={6}>
-          {MEME_DATA.map((item, idx) => (
+          {memeData.map((item, idx) => (
             <Card className={classes.memeCard} key={idx}>
               <CardHeader
-                title={item.name}
-                subheader="September 14, 2020"
+                title={stripExt(item.name)}
+                subheader={getDateStr(item.createdAt)}
                 // avatar={<AccountCircleIcon fontSize="large" />}
               />
 

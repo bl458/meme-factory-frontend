@@ -9,7 +9,14 @@ export const fetchImages = async () => {
   try {
     const response = await fetch(url, options);
     console.log("FetchImages:", response.status);
+
+    if (response.status === 200) return await response.json();
+    else {
+      console.log(await response.json());
+      return [];
+    }
   } catch (err) {
     console.log(err);
+    return [];
   }
 };
