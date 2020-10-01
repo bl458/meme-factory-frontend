@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { Avatar, Hidden, makeStyles, Typography } from "@material-ui/core";
 import {
   Card,
   CardActions,
@@ -14,6 +14,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import Navbar from "./Navbar";
 
 import { fetchImages } from "../helper/apiCall";
+import { AccountCircleRounded } from "@material-ui/icons";
 
 const useStyle = makeStyles((props) => {
   return {
@@ -23,6 +24,12 @@ const useStyle = makeStyles((props) => {
     memeCard: {
       width: "100%",
       marginBottom: props.spacing(4),
+    },
+    memeHeader: {
+      padding: "15px 20px 15px 20px",
+    },
+    memeTitle: {
+      marginLeft: "10px",
     },
     spinnerWrap: {
       display: "flex",
@@ -91,11 +98,38 @@ const Home = () => {
         <Grid item container xs={10} sm={6}>
           {memes.map((item, idx) => (
             <Card className={classes.memeCard} key={idx}>
-              <CardHeader
-                title={stripExt(item.name)}
-                subheader={getDateStr(item.createdAt)}
-                // avatar={<AccountCircleIcon fontSize="large" />}
-              />
+              <Grid
+                item
+                container
+                alignItems="center"
+                className={classes.memeHeader}
+              >
+                <Grid item container xs={12} sm={10} alignItems="center">
+                  <Hidden xsDown>
+                    <AccountCircleRounded fontSize="large" />
+                  </Hidden>
+                  <Typography
+                    variant="h6"
+                    noWrap={true}
+                    className={classes.memeTitle}
+                  >
+                    {stripExt(item.name)}
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  item
+                  container
+                  xs={false}
+                  sm={2}
+                  alignItems="center"
+                  justify="flex-end"
+                >
+                  <Hidden xsDown>
+                    <Typography variant="body1">1hr</Typography>
+                  </Hidden>
+                </Grid>
+              </Grid>
 
               <img src={item.url} alt="" style={{ width: "100%" }} />
 
