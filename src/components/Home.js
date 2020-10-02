@@ -98,13 +98,13 @@ const Home = () => {
   };
 
   const blurHashToSrc = (blurHash) => {
-    const pixels = decode(blurHash, 1, 1);
+    const pixels = decode(blurHash, 16, 16);
 
-    const canvas = createCanvas(1, 1);
+    const canvas = createCanvas(16, 16);
     const ctx = canvas.getContext("2d");
-    const imgData = ctx.createImageData(1, 1);
+    const imgData = ctx.createImageData(16, 16);
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 16 * 16 * 4; i++) {
       imgData.data[i] = pixels[i];
     }
 
@@ -123,6 +123,21 @@ const Home = () => {
   useEffect(() => {
     fetchData();
   }, [pageNo]);
+
+  // Uncomment to test blurHash
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
+  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
 
   return (
     <>
