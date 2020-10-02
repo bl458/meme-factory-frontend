@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Hidden, makeStyles, Typography } from "@material-ui/core";
 import {
   Card,
   CardActions,
@@ -7,13 +6,16 @@ import {
   Grid,
   CircularProgress,
   Box,
+  Hidden,
+  Typography,
 } from "@material-ui/core";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import { makeStyles } from "@material-ui/core";
+import { AccountCircleRounded, FavoriteRounded } from "@material-ui/icons";
 
 import Navbar from "./Navbar";
 
 import { fetchImages } from "../helper/apiCall";
-import { AccountCircleRounded } from "@material-ui/icons";
+import { LazyImage } from "./common/LazyImage";
 
 const useStyle = makeStyles((props) => {
   return {
@@ -45,8 +47,8 @@ const Home = () => {
   const [memes, setMemes] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  // seed for rand(seed) in backend's mysql query. Random integer 0 ~ 9999
   const [endOfPage, setEndOfPage] = useState(false);
+  // seed for rand(seed) in backend's mysql query. Random integer 0 ~ 9999
   const seed = useRef(Math.floor(Math.random() * 9999));
 
   // Style
@@ -125,11 +127,7 @@ const Home = () => {
                   <Hidden xsDown>
                     <AccountCircleRounded fontSize="large" />
                   </Hidden>
-                  <Typography
-                    variant="h6"
-                    noWrap={true}
-                    className={classes.memeTitle}
-                  >
+                  <Typography variant="h6" noWrap className={classes.memeTitle}>
                     admin
                   </Typography>
                 </Grid>
@@ -150,11 +148,12 @@ const Home = () => {
                 </Grid>
               </Grid>
 
-              <img src={item.url} alt="" style={{ width: "100%" }} />
+              {/* <img src={item.url} alt="" style={{ width: "100%" }} /> */}
+              <LazyImage src={item.url} alt="" style={{ width: "100%" }} />
 
               <CardActions>
                 <IconButton aria-label="add to favorites">
-                  <FavoriteIcon />
+                  <FavoriteRounded />
                 </IconButton>
               </CardActions>
             </Card>
