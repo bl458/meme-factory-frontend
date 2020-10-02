@@ -98,13 +98,13 @@ const Home = () => {
   };
 
   const blurHashToSrc = (blurHash) => {
-    const pixels = decode(blurHash, 32, 32);
+    const pixels = decode(blurHash, 1, 1);
 
-    const canvas = createCanvas(32, 32);
+    const canvas = createCanvas(1, 1);
     const ctx = canvas.getContext("2d");
-    const imgData = ctx.createImageData(160, 120);
+    const imgData = ctx.createImageData(1, 1);
 
-    for (var i = 0; i < 32 * 32 * 4; i++) {
+    for (var i = 0; i < 4; i++) {
       imgData.data[i] = pixels[i];
     }
 
@@ -127,17 +127,6 @@ const Home = () => {
   return (
     <>
       <Navbar />
-
-      <img
-        style={{
-          display: "block",
-          maxWidth: "1000px",
-          maxHeight: "1000px",
-          width: "auto",
-          height: "auto",
-        }}
-        src={blurHashToSrc("U16b4N,6MaxuiZ%ix8ROSCDgS8V=RNRTMwp0")}
-      />
 
       <Grid container className={classes.memes}>
         <Grid item xs={1} sm={3} />
@@ -179,7 +168,6 @@ const Home = () => {
 
               <LazyImage
                 src={item.url}
-                alt=""
                 blurPlaceholder={blurHashToSrc(item.hash)}
               />
 
