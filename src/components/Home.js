@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Avatar, Hidden, makeStyles, Typography } from "@material-ui/core";
+import React, { memo, useEffect, useRef, useState } from "react";
+import {
+  Avatar,
+  debounce,
+  Hidden,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import {
   Card,
   CardActions,
@@ -61,17 +67,15 @@ const Home = () => {
     if (!date) return;
 
     const miliDiff = new Date().getTime() - new Date(date).getTime();
-    const dayDiff = Math.floor(miliDiff / 1000 / 60 / 60 / 24);
 
-    if (dayDiff >= 1) return dayDiff + " d";
+    const dayDiff = Math.floor(miliDiff / 1000 / 60 / 60 / 24);
+    if (dayDiff >= 1) return dayDiff + "d";
 
     const hourDiff = Math.floor(miliDiff / 1000 / 60 / 60);
-
-    if (hourDiff >= 1) return hourDiff + " h";
+    if (hourDiff >= 1) return hourDiff + "h";
 
     const minDiff = Math.floor(miliDiff / 1000 / 60);
-
-    if (minDiff >= 1) return minDiff + " min";
+    if (minDiff >= 1) return minDiff + "min";
 
     return "just now";
   };
@@ -80,14 +84,14 @@ const Home = () => {
     setIsLoading(true);
 
     const newMemes = await fetchImages(seed, pageNo);
-    setMemes([...memes, ...newMemes]);
+    setMemes((prevMemes) => [...prevMemes, ...newMemes]);
 
     setIsLoading(false);
   };
 
   const onScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight)
-      setPageNo(pageNo + 1);
+      setPageNo((prevPageNo) => prevPageNo + 1);
   };
 
   // Hooks
