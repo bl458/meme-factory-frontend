@@ -46,19 +46,13 @@ const Home = () => {
   const [pageNo, setPageNo] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   // seed for rand(seed) in backend's mysql query. Random integer 0 ~ 9999
-  const [seed, setSeed] = useState(Math.floor(Math.random() * 9999));
   const [endOfPage, setEndOfPage] = useState(false);
+  const seed = useRef(Math.floor(Math.random() * 9999));
 
   // Style
   const classes = useStyle();
 
   // Functions
-  const stripExt = (fileName) => {
-    const dotIdx = fileName.lastIndexOf(".");
-
-    return fileName.substring(0, dotIdx);
-  };
-
   const getDiffFromNow = (date) => {
     if (!date) return;
 
@@ -80,7 +74,7 @@ const Home = () => {
     if (!endOfPage) {
       setIsLoading(true);
 
-      const newMemes = await fetchImages(seed, pageNo);
+      const newMemes = await fetchImages(seed.current, pageNo);
 
       if (newMemes.length === 0) {
         setEndOfPage(true);
@@ -109,8 +103,6 @@ const Home = () => {
   useEffect(() => {
     fetchData();
   }, [pageNo]);
-
-  console.log(memes);
 
   return (
     <>
