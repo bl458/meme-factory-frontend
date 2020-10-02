@@ -1,15 +1,8 @@
-import React, { memo, useEffect, useRef, useState } from "react";
-import {
-  Avatar,
-  debounce,
-  Hidden,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import React, { useEffect, useRef, useState } from "react";
+import { Hidden, makeStyles, Typography } from "@material-ui/core";
 import {
   Card,
   CardActions,
-  CardHeader,
   IconButton,
   Grid,
   CircularProgress,
@@ -32,7 +25,9 @@ const useStyle = makeStyles((props) => {
       marginBottom: props.spacing(4),
     },
     memeHeader: {
-      padding: "15px 20px 30px 20px",
+      padding: "15px 20px",
+      alignItems: "center",
+      alignContent: "center",
     },
     memeTitle: {
       marginLeft: "10px",
@@ -99,8 +94,6 @@ const Home = () => {
     }
   };
 
-  console.log(endOfPage);
-
   const onScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight)
       setPageNo((prevPageNo) => prevPageNo + 1);
@@ -133,6 +126,7 @@ const Home = () => {
                 item
                 container
                 alignItems="center"
+                justify="center"
                 className={classes.memeHeader}
               >
                 <Grid item container xs={12} sm={10} alignItems="center">
