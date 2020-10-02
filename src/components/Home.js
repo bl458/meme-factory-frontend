@@ -26,7 +26,7 @@ const useStyle = makeStyles((props) => {
       marginBottom: props.spacing(4),
     },
     memeHeader: {
-      padding: "15px 20px 15px 20px",
+      padding: "15px 20px 30px 20px",
     },
     memeTitle: {
       marginLeft: "10px",
@@ -57,10 +57,23 @@ const Home = () => {
     return fileName.substring(0, dotIdx);
   };
 
-  const getDateStr = (itemDate) => {
-    if (!itemDate) return;
+  const getDiffFromNow = (date) => {
+    if (!date) return;
 
-    return new Date(itemDate).toISOString().substring(0, 10);
+    const miliDiff = new Date().getTime() - new Date(date).getTime();
+    const dayDiff = Math.floor(miliDiff / 1000 / 60 / 60 / 24);
+
+    if (dayDiff >= 1) return dayDiff + " d";
+
+    const hourDiff = Math.floor(miliDiff / 1000 / 60 / 60);
+
+    if (hourDiff >= 1) return hourDiff + " h";
+
+    const minDiff = Math.floor(miliDiff / 1000 / 60);
+
+    if (minDiff >= 1) return minDiff + " min";
+
+    return "just now";
   };
 
   const fetchData = async () => {
@@ -113,7 +126,7 @@ const Home = () => {
                     noWrap={true}
                     className={classes.memeTitle}
                   >
-                    {stripExt(item.name)}
+                    admin
                   </Typography>
                 </Grid>
 
@@ -126,7 +139,9 @@ const Home = () => {
                   justify="flex-end"
                 >
                   <Hidden xsDown>
-                    <Typography variant="body1">1hr</Typography>
+                    <Typography variant="body1">
+                      {getDiffFromNow(item.createdAt)}
+                    </Typography>
                   </Hidden>
                 </Grid>
               </Grid>
