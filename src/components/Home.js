@@ -52,6 +52,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   // seed for rand(seed) in backend's mysql query. Random integer 0 ~ 9999
   const [seed, setSeed] = useState(Math.floor(Math.random() * 9999));
+  const [endOfPage, setEndOfPage] = useState(false);
 
   // Style
   const classes = useStyle();
@@ -81,13 +82,24 @@ const Home = () => {
   };
 
   const fetchData = async () => {
-    setIsLoading(true);
+    if (!endOfPage) {
+      setIsLoading(true);
 
-    const newMemes = await fetchImages(seed, pageNo);
-    setMemes((prevMemes) => [...prevMemes, ...newMemes]);
+      const newMemes = await fetchImages(seed, pageNo);
 
-    setIsLoading(false);
+      if (newMemes.length === 0) {
+        setEndOfPage(true);
+        setIsLoading(false);
+        return;
+      }
+
+      setMemes((prevMemes) => [...prevMemes, ...newMemes]);
+
+      setIsLoading(false);
+    }
   };
+
+  console.log(endOfPage);
 
   const onScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight)
@@ -104,6 +116,8 @@ const Home = () => {
   useEffect(() => {
     fetchData();
   }, [pageNo]);
+
+  console.log(memes);
 
   return (
     <>
