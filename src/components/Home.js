@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { decode } from "blurhash";
+import { createCanvas } from "canvas";
 import {
   Card,
   CardActions,
@@ -12,8 +14,8 @@ import {
 import { makeStyles } from "@material-ui/core";
 import { AccountCircleRounded, FavoriteRounded } from "@material-ui/icons";
 
-import LazyImage from "./common/LazyImage";
 import Navbar from "./Navbar";
+import LazyImage from "./common/LazyImage";
 
 import { fetchImages } from "../helper/apiCall";
 
@@ -95,16 +97,21 @@ const Home = () => {
       setPageNo((prevPageNo) => prevPageNo + 1);
   };
 
-  // const blurHashToSrc = (blurHash) => {
-  //   const pixels = decode(blurHash, 200, 200, 1);
-  //   const canvas = createCanvas(200, 200);
-  //   const ctx = canvas.getContext("2d");
+  const blurHashToSrc = (blurHash) => {
+    const pixels = decode(blurHash, 32, 32);
 
-  //   const imageData = ctx.createImageData(200, 200);
-  //   imageData.data.set(pixels);
+    const canvas = createCanvas(32, 32);
+    const ctx = canvas.getContext("2d");
+    const imgData = ctx.createImageData(160, 120);
 
-  //   return canvas.toDataURL();
-  // };
+    for (var i = 0; i < 32 * 32 * 4; i++) {
+      imgData.data[i] = pixels[i];
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+
+    return canvas.toDataURL();
+  };
 
   // Hooks
   useEffect(() => {
@@ -120,6 +127,17 @@ const Home = () => {
   return (
     <>
       <Navbar />
+
+      <img
+        style={{
+          display: "block",
+          maxWidth: "1000px",
+          maxHeight: "1000px",
+          width: "auto",
+          height: "auto",
+        }}
+        src={blurHashToSrc("U16b4N,6MaxuiZ%ix8ROSCDgS8V=RNRTMwp0")}
+      />
 
       <Grid container className={classes.memes}>
         <Grid item xs={1} sm={3} />
@@ -162,8 +180,7 @@ const Home = () => {
               <LazyImage
                 src={item.url}
                 alt=""
-                style={{ width: "100%" }}
-                // placeholder={blurHashToSrc(item.hash)}
+                blurPlaceholder={blurHashToSrc(item.hash)}
               />
 
               <CardActions>

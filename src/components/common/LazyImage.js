@@ -4,15 +4,15 @@ import React, { useEffect, useState } from "react";
 const placeholder =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII=";
 
-const LazyImage = ({ src, alt, style }) => {
-  const [imageSrc, setImageSrc] = useState(placeholder);
+const LazyImage = ({ src, alt, blurPlaceholder }) => {
+  const [imageSrc, setImageSrc] = useState(blurPlaceholder);
   const [imageRef, setImageRef] = useState();
 
   useEffect(() => {
     let observer;
     let didCancel = false;
 
-    if (imageRef && imageSrc === placeholder) {
+    if (imageRef && imageSrc === blurPlaceholder) {
       if (IntersectionObserver) {
         observer = new IntersectionObserver(
           (entries) => {
@@ -45,9 +45,18 @@ const LazyImage = ({ src, alt, style }) => {
         observer.unobserve(imageRef);
       }
     };
-  }, [imageRef, imageSrc, setImageSrc, src]);
+  }, [imageRef, imageSrc, setImageSrc, src, blurPlaceholder]);
 
-  return <img ref={setImageRef} src={imageSrc} alt={alt} style={style} />;
+  return (
+    <img
+      ref={setImageRef}
+      src={imageSrc}
+      alt={alt}
+      style={{
+        width: "100%",
+      }}
+    />
+  );
 };
 
 export default LazyImage;
