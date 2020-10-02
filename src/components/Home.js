@@ -12,10 +12,10 @@ import {
 import { makeStyles } from "@material-ui/core";
 import { AccountCircleRounded, FavoriteRounded } from "@material-ui/icons";
 
+import LazyImage from "./common/LazyImage";
 import Navbar from "./Navbar";
 
 import { fetchImages } from "../helper/apiCall";
-import { LazyImage } from "./common/LazyImage";
 
 const useStyle = makeStyles((props) => {
   return {
@@ -95,6 +95,17 @@ const Home = () => {
       setPageNo((prevPageNo) => prevPageNo + 1);
   };
 
+  // const blurHashToSrc = (blurHash) => {
+  //   const pixels = decode(blurHash, 200, 200, 1);
+  //   const canvas = createCanvas(200, 200);
+  //   const ctx = canvas.getContext("2d");
+
+  //   const imageData = ctx.createImageData(200, 200);
+  //   imageData.data.set(pixels);
+
+  //   return canvas.toDataURL();
+  // };
+
   // Hooks
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
@@ -148,8 +159,12 @@ const Home = () => {
                 </Grid>
               </Grid>
 
-              {/* <img src={item.url} alt="" style={{ width: "100%" }} /> */}
-              <LazyImage src={item.url} alt="" style={{ width: "100%" }} />
+              <LazyImage
+                src={item.url}
+                alt=""
+                style={{ width: "100%" }}
+                // placeholder={blurHashToSrc(item.hash)}
+              />
 
               <CardActions>
                 <IconButton aria-label="add to favorites">

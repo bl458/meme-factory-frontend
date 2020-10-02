@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+// import { Blurhash } from "react-blurhash";
 
 const placeholder =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII=";
 
-export const LazyImage = ({ src, alt, style }) => {
+const LazyImage = ({ src, alt, style }) => {
   const [imageSrc, setImageSrc] = useState(placeholder);
   const [imageRef, setImageRef] = useState();
 
@@ -48,3 +49,5 @@ export const LazyImage = ({ src, alt, style }) => {
 
   return <img ref={setImageRef} src={imageSrc} alt={alt} style={style} />;
 };
+
+export default LazyImage;
