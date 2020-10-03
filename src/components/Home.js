@@ -103,7 +103,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    fetchData();
+    if (!isLoading) fetchData();
   }, [pageNo]);
 
   return (
