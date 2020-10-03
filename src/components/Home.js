@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { decode } from "blurhash";
-import { createCanvas } from "canvas";
 import {
   Card,
   CardActions,
@@ -97,22 +95,6 @@ const Home = () => {
       setPageNo((prevPageNo) => prevPageNo + 1);
   };
 
-  const blurHashToSrc = (blurHash) => {
-    const pixels = decode(blurHash, 16, 16);
-
-    const canvas = createCanvas(16, 16);
-    const ctx = canvas.getContext("2d");
-    const imgData = ctx.createImageData(16, 16);
-
-    for (var i = 0; i < 16 * 16 * 4; i++) {
-      imgData.data[i] = pixels[i];
-    }
-
-    ctx.putImageData(imgData, 0, 0);
-
-    return canvas.toDataURL();
-  };
-
   // Hooks
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
@@ -123,21 +105,6 @@ const Home = () => {
   useEffect(() => {
     fetchData();
   }, [pageNo]);
-
-  // Uncomment to test blurHash
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
-  // console.log(blurHashToSrc("U~L}Kgofozt7~qj[f6ofaeayayj[IoaybHay"));
 
   return (
     <>
@@ -183,7 +150,7 @@ const Home = () => {
 
               <LazyImage
                 src={item.url}
-                blurPlaceholder={blurHashToSrc(item.hash)}
+                blurPlaceholder={item.blurPlaceholder}
               />
 
               <CardActions>
